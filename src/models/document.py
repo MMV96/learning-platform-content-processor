@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional, Dict, Any, Union
 from datetime import datetime
 from bson import ObjectId
-import json
 
 class PyObjectId(str):
     """Simple ObjectId type that works with any Pydantic v2 version"""

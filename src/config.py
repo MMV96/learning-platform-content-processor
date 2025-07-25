@@ -1,6 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List
-import os
 
 class Settings(BaseSettings):
     """Application configuration"""

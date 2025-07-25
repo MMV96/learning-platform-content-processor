@@ -1,6 +1,5 @@
 import io
 import logging
-from typing import Optional
 import PyPDF2
 import zipfile
 import xml.etree.ElementTree as ET
