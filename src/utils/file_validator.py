@@ -1,10 +1,17 @@
-# utils/file_validator.py
+# src/utils/file_validator.py
 
 import os
-import magic
+import logging
 from fastapi import UploadFile, HTTPException
 from typing import List
-import logging
+
+# Import con try/except per gestire libmagic opzionale
+try:
+    import magic
+    HAS_MAGIC = True
+except ImportError:
+    HAS_MAGIC = False
+    magic = None
 
 from ..config import settings
 
@@ -105,16 +112,19 @@ def validate_file_content(file_content: bytes, filename: str) -> None:
             raise FileValidationError("File is empty")
         
         # Validate file signature/magic bytes (if libmagic is available)
-        try:
-            detected_type = magic.from_buffer(file_content, mime=True)
-            logger.info(f"Detected MIME type for {filename}: {detected_type}")
-            
-            # You can add additional validation based on detected type
-            _validate_magic_bytes(file_content, filename)
-            
-        except Exception as e:
-            logger.warning(f"Could not detect file type for {filename}: {e}")
-            # Continue without magic byte validation if libmagic is not available
+        if HAS_MAGIC:
+            try:
+                detected_type = magic.from_buffer(file_content, mime=True)
+                logger.info(f"Detected MIME type for {filename}: {detected_type}")
+                
+                # You can add additional validation based on detected type
+                _validate_magic_bytes(file_content, filename)
+                
+            except Exception as e:
+                logger.warning(f"Could not detect file type for {filename}: {e}")
+                # Continue without magic byte validation if libmagic fails
+        else:
+            logger.info("libmagic not available, skipping magic byte validation")
         
         logger.info(f"File content validation passed for: {filename}")
         
@@ -173,8 +183,8 @@ def sanitize_filename(filename: str) -> str:
         name, ext = os.path.splitext(sanitized)
         sanitized = name[:255-len(ext)] + ext
     
-    # Ensure it's not empty
-    if not sanitized:
+    # Ensure it's not empty or whitespace-only
+    if not sanitized or not sanitized.strip():
         sanitized = "document.txt"
     
     return sanitized

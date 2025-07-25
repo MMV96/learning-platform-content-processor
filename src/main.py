@@ -118,6 +118,9 @@ async def upload_document(
             message="Document uploaded and processed successfully"
         )
         
+    except HTTPException:
+        # Re-raise HTTP exceptions (like validation errors) as-is
+        raise
     except Exception as e:
         logger.error(f"Document upload failed: {e}")
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
@@ -134,6 +137,9 @@ async def get_document(document_id: str, db=Depends(get_database)):
         
         return DocumentResponse(**document)
         
+    except HTTPException:
+        # Re-raise HTTP exceptions (like 404) as-is
+        raise
     except Exception as e:
         logger.error(f"Failed to get document {document_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -173,6 +179,9 @@ async def delete_document(document_id: str, db=Depends(get_database)):
         
         return {"message": "Document deleted successfully"}
         
+    except HTTPException:
+        # Re-raise HTTP exceptions (like 404) as-is
+        raise
     except Exception as e:
         logger.error(f"Failed to delete document {document_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -192,6 +201,9 @@ async def reprocess_document(document_id: str, db=Depends(get_database)):
             "chunks_count": result.get("chunks_count", 0)
         }
         
+    except HTTPException:
+        # Re-raise HTTP exceptions (like 404) as-is
+        raise
     except Exception as e:
         logger.error(f"Failed to reprocess document {document_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))

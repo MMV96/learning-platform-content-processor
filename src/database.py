@@ -45,19 +45,6 @@ async def close_mongodb_connection():
         mongodb_client = None
         logger.info("MongoDB connection closed")
 
-async def test_mongodb_connection():
-    """Test MongoDB connection"""
-    try:
-        client = get_mongodb_client()
-        await client.admin.command('ping')
-        logger.info("✅ MongoDB connection test successful")
-        return True
-    except ConnectionFailure as e:
-        logger.error(f"❌ MongoDB connection test failed: {e}")
-        return False
-    except Exception as e:
-        logger.error(f"❌ Unexpected error during MongoDB connection test: {e}")
-        return False
 
 # Database Collections
 class Collections:

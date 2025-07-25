@@ -1,28 +1,27 @@
 # src/models/document.py
 
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union
 from datetime import datetime
 from bson import ObjectId
+import json
 
-class PyObjectId(ObjectId):
-    """Custom ObjectId type for Pydantic v2"""
+class PyObjectId(str):
+    """Simple ObjectId type that works with any Pydantic v2 version"""
     
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v, handler=None):
+    def validate(cls, v):
         if not ObjectId.is_valid(v):
             raise ValueError("Invalid ObjectId")
-        return ObjectId(v)
+        return str(ObjectId(v))
 
     @classmethod
-    def __get_pydantic_json_schema__(cls, field_schema, handler):
-        """Pydantic v2 method for JSON schema modification"""
+    def __modify_schema__(cls, field_schema):
         field_schema.update(type="string")
-        return field_schema
 
 class DocumentMetadata(BaseModel):
     """Document metadata model"""
@@ -38,7 +37,7 @@ class DocumentMetadata(BaseModel):
     file_size: int
     word_count: Optional[int] = None
     character_count: Optional[int] = None
-    estimated_reading_time: Optional[int] = None  # minutes
+    estimated_reading_time: Optional[int] = None
 
 class DocumentChunk(BaseModel):
     """Document chunk model"""
@@ -58,11 +57,10 @@ class Document(BaseModel):
     """Main document model"""
     model_config = ConfigDict(
         populate_by_name=True,
-        arbitrary_types_allowed=True,
-        json_encoders={ObjectId: str}
+        arbitrary_types_allowed=True
     )
     
-    id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
+    id: Optional[str] = Field(default_factory=lambda: str(ObjectId()), alias="_id")
     title: str
     content: str
     summary: Optional[str] = None
@@ -71,7 +69,7 @@ class Document(BaseModel):
     uploaded_at: datetime = Field(default_factory=datetime.utcnow)
     processed_at: Optional[datetime] = None
     metadata: DocumentMetadata
-    status: str = "processing"  # processing, completed, failed
+    status: str = "processing"
 
 class DocumentResponse(BaseModel):
     """Document response model"""

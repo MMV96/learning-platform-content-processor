@@ -240,7 +240,7 @@ class DocumentProcessor:
         
         try:
             # Convert to dict for MongoDB
-            doc_dict = document.dict(by_alias=True, exclude={"id"})
+            doc_dict = document.model_dump(by_alias=True, exclude={"id"})
             
             # Insert into database
             result = await db[Collections.BOOKS].insert_one(doc_dict)
@@ -328,7 +328,7 @@ class DocumentProcessor:
             
             # Update document
             update_data = {
-                "chunks": [chunk.dict() for chunk in processed.chunks],
+                "chunks": [chunk.model_dump() for chunk in processed.chunks],
                 "summary": processed.summary,
                 "processed_at": datetime.utcnow(),
                 "status": "completed"

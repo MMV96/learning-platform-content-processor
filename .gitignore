@@ -99,3 +99,7 @@ temp/
 
 # Docker
 .dockerignore
+
+#Claude
+.claude/
+CLAUDE.md
