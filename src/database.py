@@ -1,5 +1,3 @@
-# learning-platform-content-processor/src/database.py
-
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConnectionFailure
 from .config import settings

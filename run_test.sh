@@ -1,5 +1,5 @@
 #!/bin/bash
-# run_tests.sh - Test runner script for Content Processor Service
+# Test runner script for Content Processor Service
 
 set -e
 
@@ -69,18 +69,6 @@ run_integration_tests() {
     pytest tests/test_api/ -v
 }
 
-# Function to run tests in parallel
-run_parallel_tests() {
-    print_header "Running Tests in Parallel"
-    pytest tests/ -v -n auto
-}
-
-# Function to run tests with detailed output
-run_detailed_tests() {
-    print_header "Running Tests with Detailed Output"
-    pytest tests/ -v -s --tb=long
-}
-
 # Function to run specific test file
 run_specific_test() {
     local test_file=$1
@@ -92,27 +80,6 @@ run_specific_test() {
     
     print_header "Running Specific Test: $test_file"
     pytest "$test_file" -v
-}
-
-# Function to run linting and formatting checks
-run_quality_checks() {
-    print_header "Running Code Quality Checks"
-    
-    # Check if tools are available
-    if command -v black &> /dev/null; then
-        echo "🔍 Checking code formatting with black..."
-        black --check src/ tests/ || print_warning "Code formatting issues found"
-    fi
-    
-    if command -v flake8 &> /dev/null; then
-        echo "🔍 Checking code style with flake8..."
-        flake8 src/ tests/ || print_warning "Code style issues found"
-    fi
-    
-    if command -v mypy &> /dev/null; then
-        echo "🔍 Checking types with mypy..."
-        mypy src/ || print_warning "Type checking issues found"
-    fi
 }
 
 # Function to show test statistics
@@ -178,20 +145,9 @@ case "${1:-help}" in
         check_pytest
         run_integration_tests
         ;;
-    "parallel")
-        check_pytest
-        run_parallel_tests
-        ;;
-    "detailed")
-        check_pytest
-        run_detailed_tests
-        ;;
     "specific")
         check_pytest
         run_specific_test "$2"
-        ;;
-    "quality")
-        run_quality_checks
         ;;
     "stats")
         check_pytest
@@ -207,11 +163,6 @@ case "${1:-help}" in
     "setup")
         setup_test_env
         ;;
-    "all")
-        check_pytest
-        run_quality_checks
-        run_coverage_tests
-        ;;
     "help")
         echo "Content Processor Service - Test Runner"
         echo ""
@@ -222,15 +173,11 @@ case "${1:-help}" in
         echo "  coverage      Run tests with coverage report"
         echo "  unit          Run unit tests only"
         echo "  integration   Run integration tests only"
-        echo "  parallel      Run tests in parallel"
-        echo "  detailed      Run tests with detailed output"
         echo "  specific FILE Run specific test file"
-        echo "  quality       Run code quality checks"
         echo "  stats         Show test statistics"
         echo "  smoke         Run quick smoke tests"
         echo "  clean         Clean test artifacts"
         echo "  setup         Setup test environment"
-        echo "  all           Run quality checks and coverage tests"
         echo "  help          Show this help message"
         echo ""
         echo "Examples:"

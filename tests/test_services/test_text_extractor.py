@@ -1,5 +1,3 @@
-# tests/test_services/test_text_extractor.py
-
 import pytest
 from unittest.mock import patch, MagicMock, mock_open
 import io

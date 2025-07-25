@@ -1,5 +1,3 @@
-# learning-platform-content-processor/src/main.py
-
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager

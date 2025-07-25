@@ -1,5 +1,3 @@
-# tests/test_api/test_main.py
-
 import pytest
 from unittest.mock import patch, AsyncMock, MagicMock
 from httpx import AsyncClient

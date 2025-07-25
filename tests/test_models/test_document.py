@@ -1,5 +1,3 @@
-# tests/test_models/test_document.py
-
 import pytest
 from datetime import datetime
 from bson import ObjectId

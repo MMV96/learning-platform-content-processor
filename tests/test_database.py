@@ -1,5 +1,3 @@
-# tests/test_database.py
-
 import pytest
 from unittest.mock import patch, MagicMock, AsyncMock
 from motor.motor_asyncio import AsyncIOMotorClient

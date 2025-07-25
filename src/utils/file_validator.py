@@ -1,9 +1,6 @@
-# src/utils/file_validator.py
-
 import os
 import logging
 from fastapi import UploadFile, HTTPException
-from typing import List
 
 # Import con try/except per gestire libmagic opzionale
 try:

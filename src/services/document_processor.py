@@ -1,7 +1,4 @@
-# learning-platform-content-processor/src/services/document_processor.py
-
 import re
-import hashlib
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 from bson import ObjectId

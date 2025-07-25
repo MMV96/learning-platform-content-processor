@@ -1,5 +1,3 @@
-# tests/test_utils/test_file_validator.py
-
 import pytest
 from unittest.mock import patch, MagicMock
 from fastapi import HTTPException
