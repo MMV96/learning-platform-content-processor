@@ -1,6 +1,6 @@
 import io
 import logging
-import PyPDF2
+import pypdf
 import zipfile
 import xml.etree.ElementTree as ET
 from docx import Document as DocxDocument
@@ -51,7 +51,7 @@ class TextExtractor:
         
         try:
             pdf_file = io.BytesIO(file_content)
-            pdf_reader = PyPDF2.PdfReader(pdf_file)
+            pdf_reader = pypdf.PdfReader(pdf_file)
             
             text_content = []
             

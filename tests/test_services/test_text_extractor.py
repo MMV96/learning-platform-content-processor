@@ -54,7 +54,7 @@ class TestTextExtractor:
         assert "No text content found" in str(exc_info.value)
     
     @pytest.mark.asyncio
-    @patch('src.services.text_extractor.PyPDF2.PdfReader')
+    @patch('src.services.text_extractor.pypdf.PdfReader')
     async def test_extract_from_pdf_success(self, mock_pdf_reader, extractor, sample_pdf_text):
         """Test successful PDF text extraction"""
         # Arrange
@@ -81,7 +81,7 @@ class TestTextExtractor:
         mock_pdf_reader.assert_called_once()
     
     @pytest.mark.asyncio
-    @patch('src.services.text_extractor.PyPDF2.PdfReader')
+    @patch('src.services.text_extractor.pypdf.PdfReader')
     async def test_extract_from_pdf_handles_page_extraction_errors(self, mock_pdf_reader, extractor):
         """Test PDF extraction handles individual page errors gracefully"""
         # Arrange
@@ -106,7 +106,7 @@ class TestTextExtractor:
         assert result == "Page 1 content"  # Only successful page content
     
     @pytest.mark.asyncio
-    @patch('src.services.text_extractor.PyPDF2.PdfReader')
+    @patch('src.services.text_extractor.pypdf.PdfReader')
     async def test_extract_from_pdf_no_readable_text_raises_error(self, mock_pdf_reader, extractor):
         """Test PDF extraction raises error when no text can be extracted"""
         # Arrange
