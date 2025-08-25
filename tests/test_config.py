@@ -15,7 +15,7 @@ class TestSettings:
             settings = Settings(_env_file=None)
             
             # Assert
-            assert settings.PORT == 8001
+            assert settings.PORT == 80
             assert settings.DEBUG is False
             assert settings.DATABASE_NAME == "learning_platform"
             assert settings.CHUNK_SIZE == 1000
@@ -142,7 +142,7 @@ class TestSettings:
             settings = Settings()
         
         # Assert
-        assert settings.PORT == 8001  # Should use default, not lowercase env var
+        assert settings.PORT == 80  # Should use default, not lowercase env var
     
     @patch('builtins.open', mock_open(read_data='PORT=9999\nDEBUG=true\n'))
     def test_settings_env_file_loading(self):
@@ -261,7 +261,7 @@ class TestSettingsIntegration:
             settings = Settings(_env_file="nonexistent.env")
             
             # Assert
-            assert settings.PORT == 8001  # Default value
+            assert settings.PORT == 80  # Default value
             assert settings.DEBUG is False  # Default value
     
     @patch.dict(os.environ, {}, clear=True)
@@ -271,7 +271,7 @@ class TestSettingsIntegration:
         settings = Settings()
         
         # Assert - should use all default values
-        assert settings.PORT == 8001
+        assert settings.PORT == 80
         assert settings.DEBUG is False
         assert settings.DATABASE_NAME == "learning_platform"
         assert settings.CHUNK_SIZE == 1000

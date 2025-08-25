@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     )
     
     # Server Configuration
-    PORT: int = 8001
+    PORT: int = 80
     DEBUG: bool = False
     
     # Database Configuration
