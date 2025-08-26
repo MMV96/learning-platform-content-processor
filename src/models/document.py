@@ -78,6 +78,7 @@ class DocumentResponse(BaseModel):
     id: str
     title: str
     summary: Optional[str] = None
+    content: Optional[str] = None
     chunks_count: int
     user_id: Optional[str] = None
     uploaded_at: datetime
